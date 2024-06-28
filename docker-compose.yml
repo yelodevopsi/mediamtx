@@ -1,0 +1,13 @@
+volumes:
+  mtx_config:
+
+services:
+  mtx:
+    image: piscada/mtx:alpha
+    stdin_open: true
+    labels:
+      service.name: "mtx"
+    tty: true
+    network_mode: "host"
+    volumes:
+      - mtx_config:/root/config
