@@ -35,10 +35,8 @@ packages/
 # Ignore compiled EXEs
 *.exe
 # But do not ignore this specific EXE
-!pipeme.exe
-!gst-pipe.exe
 !mtx_service.exe
-!mediamtx.exe
+
 
 # Ignore NuGet packages
 *.nupkg
