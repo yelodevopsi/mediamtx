@@ -61,7 +61,9 @@ jobs:
         run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
       - name: Install GStreamer runtime msi
-        run: choco install gstreamer -y
+        run: |
+          choco install gstreamer -y
+          echo "GSTREAMER_1_0_ROOT_MSVC_X86_64=D:\gstreamer\1.0\msvc_x86_64\" >> $env:GITHUB_ENV
 
       - name: Install GStreamer development msi
         run: choco install gstreamer-devel -y

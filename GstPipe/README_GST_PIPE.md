@@ -34,7 +34,7 @@ Install both the MSVC **runtime** an **development** .msi packages from gstreame
 ### Gstreamer dependencies
 
 1. Install gstreamer mentioned above.
-2. Ensure env var GSTREAMER_1_0_ROOT_X86_64 exists. It is used in the gst-pipe.vcxproj file.
+2. Ensure env var GSTREAMER_1_0_ROOT_MSVC_X86_64 exists. It is used in the gst-pipe.vcxproj file.
 3. Open Visual Studio (Community 2022) project gst-pipe.vcxproj
 
 ### libcurl dependencies
