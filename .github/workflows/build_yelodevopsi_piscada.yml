@@ -76,11 +76,7 @@ jobs:
           $curlPath = (Get-ChildItem -Path 'C:\ProgramData\chocolatey\lib\' -Filter 'curl*' | Select-Object -First 1).FullName
           echo "CURL_PACKAGE_PATH=$curlPath" >> $env:GITHUB_ENV
 
-      - name: Download vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
-
-      - name: Bootstrap vcpkg
+      - name: Bootstrap vcpkg from already existing C:\vcpkg
         run: |
           cd C:\vcpkg
           .\bootstrap-vcpkg.bat
