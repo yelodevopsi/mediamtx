@@ -37,7 +37,7 @@ packages/
 # Ignore compiled EXEs
 *.exe
 # But do not ignore this specific EXE
-!pipeme.exe
+!gst-pipe.exe
 
 # Ignore NuGet packages
 *.nupkg

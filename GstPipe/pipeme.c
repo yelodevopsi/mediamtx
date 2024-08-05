@@ -18,60 +18,59 @@ int src_is_active = 0;
 
 typedef struct
 {
-	GstElement* jitter_buffer;
+	GstElement *jitter_buffer;
 	gpointer session;
 	guint32 ssrc;
 } JitterBufferData;
 
-static gboolean bus_callback(GstBus* bus, GstMessage* message, gpointer data);
-static void src_manager(GstElement* element, GstElement* manager, gpointer user_data);
-static void sink_manager(GstElement* element, GstElement* manager, gpointer user_data);
-static gboolean print_jitter_stats(JitterBufferData* data);
-static void new_jitter_buffer(GstElement* element, GstElement* jitter_buffer, gpointer session, guint32 ssrc);
-static void on_ssrc_active_src(GstElement* rtp_bin, guint session_id, guint32 ssrc);
+static gboolean bus_callback(GstBus *bus, GstMessage *message, gpointer data);
+static void src_manager(GstElement *element, GstElement *manager, gpointer user_data);
+static void sink_manager(GstElement *element, GstElement *manager, gpointer user_data);
+static gboolean print_jitter_stats(JitterBufferData *data);
+static void new_jitter_buffer(GstElement *element, GstElement *jitter_buffer, gpointer session, guint32 ssrc);
+static void on_ssrc_active_src(GstElement *rtp_bin, guint session_id, guint32 ssrc);
 static void get_stats_from_sink_session(gpointer session, guint32 ssrc);
-static void on_ssrc_sender_active_sink(GstElement* rtp_bin, guint session_id, guint32 ssrc);
+static void on_ssrc_sender_active_sink(GstElement *rtp_bin, guint session_id, guint32 ssrc);
 static void get_stats_from_src_session(gpointer session, guint32 ssrc);
 static void get_stats_from_rtpsession(gpointer session);
-static void extract_rtsp_info_from_sink(GstElement* sink_element);
+static void extract_rtsp_info_from_sink(GstElement *sink_element);
 
-static void log_message(const char* format, va_list args);
-static void g_log(const char* format, ...);
-static void dbg_log(const char* format, ...);
+static void log_message(const char *format, va_list args);
+static void basic_log(const char *format, ...);
+static void dbg_log(const char *format, ...);
 
-
-
-void extract_rtsp_info_from_sink(GstElement* sink_element)
+void extract_rtsp_info_from_sink(GstElement *sink_element)
 {
-	gchar* location = NULL;
+	gchar *location = NULL;
 	g_object_get(sink_element, "location", &location, NULL);
 
 	if (location)
 	{
-		strncpy_s(rtsp_location, sizeof(rtsp_location), location, sizeof(rtsp_location) - 1);
+		strncpy(rtsp_location, location, sizeof(rtsp_location) - 1);
 		rtsp_location[sizeof(rtsp_location) - 1] = '\0';
 
-		const char* hostname_start = strstr(rtsp_location, "//") + 2;
-		const char* hostname_end = strchr(hostname_start, '/');
+		const char *hostname_start = strstr(rtsp_location, "//") + 2;
+		const char *hostname_end = strchr(hostname_start, '/');
 		if (hostname_end == NULL)
 		{
 			hostname_end = hostname_start + strlen(hostname_start); // In case there's no path after the hostname
 		}
 
-		const char* port_start = strchr(hostname_start, ':');
+		const char *port_start = strchr(hostname_start, ':');
 		if (port_start != NULL && port_start < hostname_end)
 		{
 			hostname_end = port_start;
 		}
 
 		size_t hostname_length = hostname_end - hostname_start;
-		strncpy_s(hostname, sizeof(hostname), hostname_start, hostname_length);
+		strncpy(hostname, hostname_start, hostname_length);
 		hostname[hostname_length] = '\0';
 
-		const char* camera_path_start = strchr(hostname_start, '/') + 1;
+		const char *camera_path_start = strchr(hostname_start, '/') + 1;
 		if (camera_path_start != NULL)
 		{
-			strcpy_s(camera_path, sizeof(camera_path), camera_path_start);
+			strncpy(camera_path, camera_path_start, sizeof(camera_path) - 1);
+			camera_path[sizeof(camera_path) - 1] = '\0';
 		}
 		else
 		{
@@ -81,10 +80,9 @@ void extract_rtsp_info_from_sink(GstElement* sink_element)
 		g_free(location);
 	}
 }
-
 int DEBUG_LEVEL = 0;
 
-static void log_message(const char* format, va_list args)
+static void log_message(const char *format, va_list args)
 {
 	// Add timestamp before print out
 	time_t t = time(NULL);
@@ -95,7 +93,7 @@ static void log_message(const char* format, va_list args)
 	vprintf(format, args);
 }
 
-static void g_log(const char* format, ...)
+static void basic_log(const char *format, ...)
 {
 	va_list args;
 	va_start(args, format);
@@ -103,7 +101,7 @@ static void g_log(const char* format, ...)
 	va_end(args);
 }
 
-static void dbg_log(const char* format, ...)
+static void dbg_log(const char *format, ...)
 {
 	if (DEBUG_LEVEL == 1)
 	{
@@ -114,7 +112,7 @@ static void dbg_log(const char* format, ...)
 	}
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	if (argc == 1)
 	{
@@ -125,10 +123,10 @@ int main(int argc, char* argv[])
 	// Check for debug mode
 	if (argc == 3)
 	{
-		gchar* dbg_str = g_strjoinv(" ", &argv[2]);
+		gchar *dbg_str = g_strjoinv(" ", &argv[2]);
 		if (g_str_has_prefix(dbg_str, "--debug="))
 		{
-			const char* debug_value_str = dbg_str + strlen("--debug=");
+			const char *debug_value_str = dbg_str + strlen("--debug=");
 			DEBUG_LEVEL = atoi(debug_value_str);
 			printf("Debug mode enabled with --debug=<1,2> flag, level: %d\n", DEBUG_LEVEL);
 		}
@@ -142,31 +140,31 @@ int main(int argc, char* argv[])
 
 	gst_init(&argc, &argv);
 
-	GMainLoop* main_loop = g_main_loop_new(NULL, FALSE);
-	gchar* pipeline_string = g_strjoinv(" ", &argv[1]);
+	GMainLoop *main_loop = g_main_loop_new(NULL, FALSE);
+	gchar *pipeline_string = g_strjoinv(" ", &argv[1]);
 
-	GError* error = NULL;
-	GstElement* pipeline = gst_parse_launch(pipeline_string, &error);
+	GError *error = NULL;
+	GstElement *pipeline = gst_parse_launch(pipeline_string, &error);
 	if (!pipeline)
 	{
-		g_log("Parse error: %s\n", error->message);
+		basic_log("Parse error: %s\n", error->message);
 		g_error_free(error);
 		return 2;
 	}
 
-	GstElement* src_element = gst_bin_get_by_name(GST_BIN(pipeline), "src");
+	GstElement *src_element = gst_bin_get_by_name(GST_BIN(pipeline), "src");
 	if (!src_element)
 	{
-		g_log("Element 'src' not found\n");
+		basic_log("Element 'src' not found\n");
 		return 2;
 	}
 
 	g_signal_connect(src_element, "new-manager", G_CALLBACK(src_manager), NULL);
 
-	GstElement* sink_element = gst_bin_get_by_name(GST_BIN(pipeline), "sink");
+	GstElement *sink_element = gst_bin_get_by_name(GST_BIN(pipeline), "sink");
 	if (!sink_element)
 	{
-		g_log("Element 'sink' not found\n");
+		basic_log("Element 'sink' not found\n");
 		return 2;
 	}
 
@@ -179,7 +177,7 @@ int main(int argc, char* argv[])
 
 	g_signal_connect(sink_element, "new-manager", G_CALLBACK(sink_manager), NULL);
 
-	GstBus* bus = gst_element_get_bus(pipeline);
+	GstBus *bus = gst_element_get_bus(pipeline);
 	gst_bus_add_watch(bus, bus_callback, main_loop);
 	gst_object_unref(bus);
 
@@ -194,11 +192,9 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-
-
-static gboolean bus_callback(GstBus* bus, GstMessage* message, gpointer data)
+static gboolean bus_callback(GstBus *bus, GstMessage *message, gpointer data)
 {
-	GMainLoop* main_loop = (GMainLoop*)data;
+	GMainLoop *main_loop = (GMainLoop *)data;
 
 	switch (GST_MESSAGE_TYPE(message))
 	{
@@ -207,13 +203,13 @@ static gboolean bus_callback(GstBus* bus, GstMessage* message, gpointer data)
 		break;
 	case GST_MESSAGE_ERROR:
 	{
-		GError* err;
-		gchar* debug_info;
+		GError *err;
+		gchar *debug_info;
 		gst_message_parse_error(message, &err, &debug_info);
-		g_log("ERROR: %s\n", err->message);
+		basic_log("ERROR: %s\n", err->message);
 		if (debug_info)
 		{
-			g_log("DEBUG: %s\n", debug_info);
+			basic_log("DEBUG: %s\n", debug_info);
 			g_free(debug_info);
 		}
 		g_error_free(err);
@@ -224,8 +220,8 @@ static gboolean bus_callback(GstBus* bus, GstMessage* message, gpointer data)
 		// Print the message details here
 		if (gst_message_get_structure(message) && DEBUG_LEVEL == 2)
 		{
-			gchar* message_details = gst_structure_to_string(gst_message_get_structure(message));
-			g_log("[LVL=2] %s\n", message_details);
+			gchar *message_details = gst_structure_to_string(gst_message_get_structure(message));
+			basic_log("[LVL=2] %s\n", message_details);
 			g_free(message_details);
 		}
 		break;
@@ -233,7 +229,7 @@ static gboolean bus_callback(GstBus* bus, GstMessage* message, gpointer data)
 	return TRUE;
 }
 
-static void src_manager(GstElement* element, GstElement* manager, gpointer user_data)
+static void src_manager(GstElement *element, GstElement *manager, gpointer user_data)
 {
 	dbg_log("New src mngr detected: %p\n", manager);
 
@@ -241,16 +237,16 @@ static void src_manager(GstElement* element, GstElement* manager, gpointer user_
 	g_signal_connect(manager, "on-ssrc-active", G_CALLBACK(on_ssrc_active_src), NULL);
 }
 
-static void sink_manager(GstElement* element, GstElement* manager, gpointer user_data)
+static void sink_manager(GstElement *element, GstElement *manager, gpointer user_data)
 {
 	dbg_log("New sink mngr detected: %p\n", manager);
 	g_signal_connect(manager, "on-sender-ssrc-active", G_CALLBACK(on_ssrc_sender_active_sink), NULL);
 }
 
-static gboolean print_jitter_stats(JitterBufferData* data)
+static gboolean print_jitter_stats(JitterBufferData *data)
 {
 	// Access the elements in the structure
-	GstElement* jitter_buffer = data->jitter_buffer;
+	GstElement *jitter_buffer = data->jitter_buffer;
 	gpointer session = data->session;
 	guint32 ssrc = data->ssrc;
 
@@ -260,7 +256,7 @@ static gboolean print_jitter_stats(JitterBufferData* data)
 	g_object_get_property(G_OBJECT(jitter_buffer), "stats", &stats_value);
 	if (G_VALUE_HOLDS(&stats_value, GST_TYPE_STRUCTURE))
 	{
-		const GstStructure* gstStats = gst_value_get_structure(&stats_value);
+		const GstStructure *gstStats = gst_value_get_structure(&stats_value);
 
 		guint64 numLost, numLate, numDuplicates, rtxCount, rtxSuccessCount, avgJitter, rtxRtt;
 		gdouble rtxPerPacket;
@@ -286,7 +282,7 @@ static gboolean print_jitter_stats(JitterBufferData* data)
 		// Example usage for JITTER_BUFFER
 		PostFields postFields;
 		postFields.statType = JITTER_BUFFER;
-		postFields.stats.jitterBufferStats = (JitterBufferStats){ numLost, numLate, numDuplicates, avgJitter, rtxCount, rtxSuccessCount, rtxPerPacket, rtxRtt };
+		postFields.stats.jitterBufferStats = (JitterBufferStats){numLost, numLate, numDuplicates, avgJitter, rtxCount, rtxSuccessCount, rtxPerPacket, rtxRtt};
 		sendPostRequest(postFields, "jitterbuffer", hostname, camera_path);
 
 		g_value_unset(&stats_value);
@@ -294,17 +290,17 @@ static gboolean print_jitter_stats(JitterBufferData* data)
 	}
 	else
 	{
-		g_log("Error: stats is not of type GstStructure\n");
+		basic_log("Error: stats is not of type GstStructure\n");
 		g_value_unset(&stats_value);
 		return FALSE;
 	}
 }
 
-static void new_jitter_buffer(GstElement* element, GstElement* jitter_buffer, gpointer session, guint32 ssrc)
+static void new_jitter_buffer(GstElement *element, GstElement *jitter_buffer, gpointer session, guint32 ssrc)
 {
 	dbg_log("New jitterBuffer detected: %p\n", jitter_buffer);
 
-	JitterBufferData* data = g_new(JitterBufferData, 1);
+	JitterBufferData *data = g_new(JitterBufferData, 1);
 	data->jitter_buffer = jitter_buffer;
 	data->session = session;
 	data->ssrc = ssrc;
@@ -312,7 +308,7 @@ static void new_jitter_buffer(GstElement* element, GstElement* jitter_buffer, gp
 	g_timeout_add(5000, (GSourceFunc)print_jitter_stats, data);
 }
 
-static void on_ssrc_sender_active_sink(GstElement* rtp_bin, guint session_id, guint32 ssrc)
+static void on_ssrc_sender_active_sink(GstElement *rtp_bin, guint session_id, guint32 ssrc)
 {
 	if (src_is_active)
 	{
@@ -323,7 +319,7 @@ static void on_ssrc_sender_active_sink(GstElement* rtp_bin, guint session_id, gu
 	dbg_log("On SSRC SENDER (SINK) active: sessionID: %u, ssrc: %u\n", session_id, ssrc);
 
 	// https://gstreamer.freedesktop.org/documentation/rtpmanager/RTPSession.html?gi-language=c#RTPSession
-	GstElement* session;
+	GstElement *session;
 	g_signal_emit_by_name(rtp_bin, "get-internal-session", session_id, &session);
 
 	if (session)
@@ -332,11 +328,11 @@ static void on_ssrc_sender_active_sink(GstElement* rtp_bin, guint session_id, gu
 	}
 	else
 	{
-		g_log("Error: session is nil\n");
+		basic_log("Error: session is nil\n");
 	}
 }
 
-static void on_ssrc_active_src(GstElement* rtp_bin, guint session_id, guint32 ssrc)
+static void on_ssrc_active_src(GstElement *rtp_bin, guint session_id, guint32 ssrc)
 {
 	dbg_log("On SSRC active (SRC): sessionID: %u, ssrc: %u\n", session_id, ssrc);
 
@@ -344,7 +340,7 @@ static void on_ssrc_active_src(GstElement* rtp_bin, guint session_id, guint32 ss
 	src_is_active = 1;
 
 	// https://gstreamer.freedesktop.org/documentation/rtpmanager/RTPSession.html?gi-language=c#RTPSession
-	GstElement* session;
+	GstElement *session;
 	g_signal_emit_by_name(rtp_bin, "get-internal-session", session_id, &session);
 
 	if (session)
@@ -355,13 +351,13 @@ static void on_ssrc_active_src(GstElement* rtp_bin, guint session_id, guint32 ss
 	}
 	else
 	{
-		g_log("Error: session is nil\n");
+		basic_log("Error: session is nil\n");
 	}
 }
 
 static void get_stats_from_sink_session(gpointer session, guint32 ssrc)
 {
-	GstElement* sink;
+	GstElement *sink;
 	g_signal_emit_by_name(session, "get-source-by-ssrc", ssrc, &sink);
 
 	if (sink)
@@ -371,7 +367,7 @@ static void get_stats_from_sink_session(gpointer session, guint32 ssrc)
 		g_object_get_property(G_OBJECT(sink), "stats", &stats_value);
 		if (G_VALUE_HOLDS(&stats_value, GST_TYPE_STRUCTURE))
 		{
-			const GstStructure* stats = gst_value_get_structure(&stats_value);
+			const GstStructure *stats = gst_value_get_structure(&stats_value);
 
 			// G_TYPE_UINT64
 			guint64 bitrate;
@@ -391,18 +387,18 @@ static void get_stats_from_sink_session(gpointer session, guint32 ssrc)
 
 			PostFields postFields;
 			postFields.statType = RTP_SOURCE;
-			postFields.stats.rtpSourceStats = (RtpSourceStats){ 0, 0, bitrate, 0 };
+			postFields.stats.rtpSourceStats = (RtpSourceStats){0, 0, bitrate, 0};
 			sendPostRequest(postFields, "rtpsource", hostname, camera_path);
 		}
 		else
 		{
-			g_log("Error: stats is not of type GstStructure\n");
+			basic_log("Error: stats is not of type GstStructure\n");
 		}
 		g_value_unset(&stats_value);
 	}
 	else
 	{
-		g_log("Error: source is nil\n");
+		basic_log("Error: source is nil\n");
 	}
 }
 
@@ -415,7 +411,7 @@ static void get_stats_from_rtpsession(gpointer session)
 
 	if (G_VALUE_HOLDS(&stats_value, GST_TYPE_STRUCTURE))
 	{
-		const GstStructure* stats = gst_value_get_structure(&stats_value);
+		const GstStructure *stats = gst_value_get_structure(&stats_value);
 
 		// "rtx-drop-count" G_TYPE_UINT The number of retransmission events dropped (due to bandwidth constraints)
 		// "sent-nack-count" G_TYPE_UINT Number of NACKs sent
@@ -443,19 +439,19 @@ static void get_stats_from_rtpsession(gpointer session)
 		// Example usage for RTP_SESSION
 		PostFields postFields;
 		postFields.statType = RTP_SESSION;
-		postFields.stats.rtpSessionStats = (RtpSessionStats){ rtx_drop_count, sent_nack_count, recv_nack_count };
+		postFields.stats.rtpSessionStats = (RtpSessionStats){rtx_drop_count, sent_nack_count, recv_nack_count};
 		sendPostRequest(postFields, "rtpsession", hostname, camera_path);
 	}
 	else
 	{
-		g_log("Error: stats is not of type GstStructure\n");
+		basic_log("Error: stats is not of type GstStructure\n");
 	}
 	g_value_unset(&stats_value);
 }
 
 static void get_stats_from_src_session(gpointer session, guint32 ssrc)
 {
-	GstElement* source;
+	GstElement *source;
 	g_signal_emit_by_name(session, "get-source-by-ssrc", ssrc, &source);
 
 	if (source)
@@ -464,7 +460,7 @@ static void get_stats_from_src_session(gpointer session, guint32 ssrc)
 		g_object_get_property(G_OBJECT(source), "stats", &stats_value);
 		if (G_VALUE_HOLDS(&stats_value, GST_TYPE_STRUCTURE))
 		{
-			const GstStructure* stats = gst_value_get_structure(&stats_value);
+			const GstStructure *stats = gst_value_get_structure(&stats_value);
 
 			// G_TYPE_INT
 			gint packets_lost;
@@ -495,17 +491,17 @@ static void get_stats_from_src_session(gpointer session, guint32 ssrc)
 
 			PostFields postFields;
 			postFields.statType = RTP_SOURCE;
-			postFields.stats.rtpSourceStats = (RtpSourceStats){ packets_lost, packets_received, bitrate, jitter };
+			postFields.stats.rtpSourceStats = (RtpSourceStats){packets_lost, packets_received, bitrate, jitter};
 			sendPostRequest(postFields, "rtpsource", hostname, camera_path);
 		}
 		else
 		{
-			g_log("Error: stats is not of type GstStructure\n");
+			basic_log("Error: stats is not of type GstStructure\n");
 		}
 		g_value_unset(&stats_value);
 	}
 	else
 	{
-		g_log("Error: source is nil\n");
+		basic_log("Error: source is nil\n");
 	}
 }

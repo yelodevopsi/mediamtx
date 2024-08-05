@@ -10,13 +10,19 @@ Use the `gst-pipe(.exe)` binary in the `runOnDemand` param in `mediamtx.yml` con
 
 ## Ubuntu/Linux - for Linux binary and docker
 
-1. Install all apt-packages needed + libcurl
-2. MISSING HERE: SEE DOCKER_FILES FOR DEPENDENCIES
+1. Install all apt-packages needed + libcurl:
+```bash
+apt install \
+	gstreamer1.0-tools \
+    gstreamer1.0-rtsp \
+    libcurl4-openssl-dev \
+    curl
+```
 3. Build in gcc by using:
 
 ```bash
 # build
-gcc pipeme.c stats_post.c -o pipeme `pkg-config --cflags --libs gstreamer-1.0` -lcurl
+gcc pipeme.c stats_post.c -o gst-pipe `pkg-config --cflags --libs gstreamer-1.0` -lcurl
 ```
 
 ## Windows - for Windows binary

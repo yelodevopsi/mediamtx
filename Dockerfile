@@ -21,18 +21,19 @@ COPY --from=builder /usr/src/app/mediamtx .
 COPY --from=builder /usr/src/app/config/mediamtx.yml ./config/mediamtx.yml
 # VOLUME [ "/config" ]
 
-COPY pipeme .
+COPY GstPipe/gst-pipe .
 
 RUN chmod +x ./mediamtx
-RUN chmod +x ./pipeme
+RUN chmod +x ./gst-pipe
 
 # Install GStreamer pipeline dependencies
 RUN apt update && apt install -y --no-install-recommends \
     gstreamer1.0-tools \
     gstreamer1.0-rtsp \
-    jq \
+    libcurl4-openssl-dev \
     curl \
     && rm -rf /var/lib/apt/lists/*
+    # jq \
 
 # Verify installation of curl
 RUN curl --version
