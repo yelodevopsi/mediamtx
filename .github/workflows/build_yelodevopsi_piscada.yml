@@ -71,14 +71,14 @@ jobs:
 
       - name: Build gst-pipe
         working-directory: ./GstPipe
-        run: msbuild gst-pipe.sln /p:Configuration=Release /p:Platform=x64
+        run: msbuild gst-pipe.sln /p:Configuration=GitHubAction /p:Platform=x64
 
       - name: Copy gst-pipe output
         run: |
-          mkdir -p ./PiscadaMtx/GstPipe/x64/Release
-          copy ./GstPipe/x64/Release/libcurl.dll ./PiscadaMtx/GstPipe/x64/Release/libcurl.dll
-          copy ./GstPipe/x64/Release/zlib1.dll ./PiscadaMtx/GstPipe/x64/Release/zlib1.dll
-          copy ./GstPipe/x64/Release/gst-pipe.exe ./PiscadaMtx/GstPipe/x64/Release/gst-ppipe.exe
+          mkdir -p ./PiscadaMtx/GstPipe/x64/GitHubAction
+          copy ./GstPipe/x64/GitHubAction/libcurl.dll ./PiscadaMtx/GstPipe/x64/GitHubAction/libcurl.dll
+          copy ./GstPipe/x64/GitHubAction/zlib1.dll ./PiscadaMtx/GstPipe/x64/GitHubAction/zlib1.dll
+          copy ./GstPipe/x64/GitHubAction/gst-pipe.exe ./PiscadaMtx/GstPipe/x64/GitHubAction/gst-pipe.exe
 
       - name: Restore dependencies
         working-directory: ./PiscadaMtx
