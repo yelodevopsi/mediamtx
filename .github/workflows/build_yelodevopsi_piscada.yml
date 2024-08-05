@@ -57,6 +57,15 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
+      - name: Install Chocolatey
+        run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+      - name: Install GStreamer
+        run: choco install gstreamer -y
+
+      - name: Install curl
+        run: choco install curl -y
+
       - name: Build gst-pipe
         working-directory: ./GstPipe
         run: msbuild gst-pipe.sln /p:Configuration=Release /p:Platform=x64
@@ -66,7 +75,7 @@ jobs:
           mkdir -p ./PiscadaMtx/GstPipe/x64/Release
           copy ./GstPipe/x64/Release/libcurl.dll ./PiscadaMtx/GstPipe/x64/Release/libcurl.dll
           copy ./GstPipe/x64/Release/zlib1.dll ./PiscadaMtx/GstPipe/x64/Release/zlib1.dll
-          copy ./GstPipe/x64/Release/gst-pipe.exe ./PiscadaMtx/GstPipe/x64/Release/gst-pipe.exe
+          copy ./GstPipe/x64/Release/gst-pipe.exe ./PiscadaMtx/GstPipe/x64/Release/gst-ppipe.exe
 
       - name: Restore dependencies
         working-directory: ./PiscadaMtx
