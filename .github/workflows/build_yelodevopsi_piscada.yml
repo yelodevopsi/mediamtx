@@ -66,8 +66,8 @@ jobs:
       - name: Install GStreamer development msi
         run: choco install gstreamer-devel -y
 
-      - name: Install curl
-        run: choco install curl --version=8.9.1_1 -y
+      - name: Install curl 8.9.1 with chocolatey
+        run: choco install curl --version=8.9.1
 
       - name: Set environment variable for curl package
         run: |
