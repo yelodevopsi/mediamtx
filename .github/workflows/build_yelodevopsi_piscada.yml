@@ -55,16 +55,19 @@ jobs:
         run: nuget install
 
       - name: Restore dependencies
+        working-directory: ./PiscadaMtx
         run: dotnet restore
 
       - name: Build
+        working-directory: ./PiscadaMtx
         run: dotnet build --configuration Release
 
       - name: Publish
+        working-directory: ./PiscadaMtx
         run: dotnet publish --configuration Release --output ./output
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
           name: production-artifacts
-          path: ./output
+          path: ./PiscadaMtx/output
