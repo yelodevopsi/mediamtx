@@ -217,15 +217,15 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 					out += metric("rtsp_conns", tags, 1)
 					out += metric("rtsp_conns_bytes_received", tags, int64(i.BytesReceived))
 					out += metric("rtsp_conns_bytes_sent", tags, int64(i.BytesSent))
-					out += metric("rtsp_conns_bitrate_sent", tags, int64(i.BitrateSent))
 					out += metric("rtsp_conns_bitrate_received", "", 0)
+					out += metric("rtsp_conns_bitrate_sent", tags, int64(i.BitrateSent))
 				}
 			} else {
 				out += metric("rtsp_conns", "", 0)
 				out += metric("rtsp_conns_bytes_received", "", 0)
 				out += metric("rtsp_conns_bytes_sent", "", 0)
-				out += metric("rtsp_conns_bitrate_sent", "", 0)
 				out += metric("rtsp_conns_bitrate_received", "", 0)
+				out += metric("rtsp_conns_bitrate_sent", "", 0)
 			}
 		}()
 
@@ -260,15 +260,15 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 					out += metric("rtsps_conns", tags, 1)
 					out += metric("rtsps_conns_bytes_received", tags, int64(i.BytesReceived))
 					out += metric("rtsps_conns_bytes_sent", tags, int64(i.BytesSent))
-					out += metric("rtsps_conns_bitrate_sent", tags, int64(i.BitrateSent))
 					out += metric("rtsps_conns_bitrate_received", "", 0)
+					out += metric("rtsps_conns_bitrate_sent", tags, int64(i.BitrateSent))
 				}
 			} else {
 				out += metric("rtsps_conns", "", 0)
 				out += metric("rtsps_conns_bytes_received", "", 0)
 				out += metric("rtsps_conns_bytes_sent", "", 0)
-				out += metric("rtsps_conns_bitrate_sent", "", 0)
 				out += metric("rtsps_conns_bitrate_received", "", 0)
+				out += metric("rtsps_conns_bitrate_sent", "", 0)
 			}
 		}()
 
@@ -399,15 +399,15 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 				out += metric("webrtc_sessions", tags, 1)
 				out += metric("webrtc_sessions_bytes_received", tags, int64(i.BytesReceived))
 				out += metric("webrtc_sessions_bytes_sent", tags, int64(i.BytesSent))
-				out += metric("webrtc_sessions_bitrate_sent", tags, int64(i.BitrateSent))
 				out += metric("webrtc_sessions_bitrate_received", tags, int64(i.BitrateReceived))
+				out += metric("webrtc_sessions_bitrate_sent", tags, int64(i.BitrateSent))
 			}
 		} else {
 			out += metric("webrtc_sessions", "", 0)
 			out += metric("webrtc_sessions_bytes_received", "", 0)
 			out += metric("webrtc_sessions_bytes_sent", "", 0)
-			out += metric("webrtc_sessions_bitrate_sent", "", 0)
 			out += metric("webrtc_sessions_bitrate_received", "", 0)
+			out += metric("webrtc_sessions_bitrate_sent", "", 0)
 		}
 	}
 
