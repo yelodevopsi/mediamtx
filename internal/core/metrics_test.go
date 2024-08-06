@@ -322,7 +322,6 @@ webrtc_sessions_bitrate_sent 0
 			`srt_conns_packets_received_avg_belated_time\{id=".*?",state="publish"\} [0-9]+`,
 			`srt_conns_packets_send_loss_rate\{id=".*?",state="publish"\} [0-9]+`,
 			`srt_conns_packets_received_loss_rate\{id=".*?",state="publish"\} [0-9]+`,
-			`webrtc_sessions\{id=".*?",state="publish"\} 1`,
 			// WebRTC Session Patterns
 			`webrtc_sessions\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} 1`,
 			`webrtc_sessions_bytes_received\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
