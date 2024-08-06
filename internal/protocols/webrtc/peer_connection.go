@@ -555,10 +555,9 @@ func (co *PeerConnection) BitrateSent() uint64 {
 
 	// Calculate the bitrate in bits per second (bps)
 	if (timeDiff) > 0 {
-		bytesDiffFloat := float64(bytesDiff * 8)
-		timeDiffFloat := float64(timeDiff)
+		bytesDiffFloat := (bytesDiff * 8)
 
-		return uint64(bytesDiffFloat / timeDiffFloat)
+		return uint64(float64(bytesDiffFloat) / (timeDiff))
 	}
 
 	return 0
@@ -584,9 +583,8 @@ func (co *PeerConnection) BitrateReceived() uint64 {
 	// Calculate the bitrate in bits per second (bps)
 	if timeDiff > 0 {
 		bytesDiffFloat := float64(bytesDiff * 8)
-		timeDiffFloat := float64(timeDiff)
 
-		return uint64(bytesDiffFloat / timeDiffFloat)
+		return uint64(bytesDiffFloat / timeDiff)
 	}
 
 	return 0

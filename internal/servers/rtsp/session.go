@@ -393,9 +393,8 @@ func (s *session) BitrateSent() uint64 {
 	// Calculate the bitrate in bits per second (bps)
 	if (timeDiff) > 0 {
 		bytesDiffFloat := float64(bytesDiff * 8)
-		timeDiffFloat := float64(timeDiff)
 
-		return uint64(bytesDiffFloat / timeDiffFloat)
+		return uint64(bytesDiffFloat / timeDiff)
 	}
 
 	return 0
@@ -419,9 +418,8 @@ func (s *session) BitrateReceived() uint64 {
 	// Calculate the bitrate in bits per second (bps)
 	if timeDiff > 0 {
 		bytesDiffFloat := float64(bytesDiff * 8)
-		timeDiffFloat := float64(timeDiff)
 
-		return uint64(bytesDiffFloat / timeDiffFloat)
+		return uint64(bytesDiffFloat / timeDiff)
 	}
 
 	return 0
