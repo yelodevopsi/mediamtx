@@ -278,15 +278,23 @@ webrtc_sessions_bitrate_sent 0
 				`rtsp_conns\{id=".*?"\} 1`+"\n"+
 				`rtsp_conns_bytes_received\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsp_conns_bytes_sent\{id=".*?"\} [0-9]+`+"\n"+
+				`rtsp_conns_bitrate_received\{id=".*?"\} [0-9]+`+"\n"+
+				`rtsp_conns_bitrate_sent\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsp_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtsp_sessions_bytes_received\{id=".*?",state="publish"\} 0`+"\n"+
 				`rtsp_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
+				`rtsp_sessions_bitrate_received\{id=".*?",state="publish"\} 0`+"\n"+
+				`rtsp_sessions_bitrate_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtsps_conns\{id=".*?"\} 1`+"\n"+
 				`rtsps_conns_bytes_received\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsps_conns_bytes_sent\{id=".*?"\} [0-9]+`+"\n"+
+				`rtsps_conns_bitrate_received\{id=".*?"\} [0-9]+`+"\n"+
+				`rtsps_conns_bitrate_sent\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsps_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtsps_sessions_bytes_received\{id=".*?",state="publish"\} 0`+"\n"+
 				`rtsps_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
+				`rtsps_sessions_bitrate_received\{id=".*?",state="publish"\} 0`+"\n"+
+				`rtsps_sessions_bitrate_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtmp_conns\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtmp_conns_bytes_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtmp_conns_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
@@ -348,6 +356,8 @@ webrtc_sessions_bitrate_sent 0
 				`webrtc_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`webrtc_sessions_bytes_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`webrtc_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
+				`webrtc_sessions_bitrate_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
+				`webrtc_sessions_bitrate_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				"$",
 			string(bo))
 
