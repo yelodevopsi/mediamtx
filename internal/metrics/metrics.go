@@ -187,7 +187,6 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 				out += metric("gst_pipes_rtx_rtt", tags, int64(i.JitterStats.RtxRtt))
 				out += metric("gst_pipes_rtx_drop_count", tags, int64(i.RtpSessionStats.RtxDropCount))
 				out += metric("gst_pipes_sent_nack_count", tags, int64(i.RtpSessionStats.SentNackCount))
-
 			}
 			m.Log(logger.Debug, "gst pipes after for-loop")
 		} else {
@@ -216,17 +215,17 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 				for _, i := range data.Items {
 					tags := "{id=\"" + i.ID.String() + "\"}"
 					out += metric("rtsp_conns", tags, 1)
-					// out += metric("rtsp_conns_bytes_received", tags, int64(i.BytesReceived))
-					// out += metric("rtsp_conns_bytes_sent", tags, int64(i.BytesSent))
+					out += metric("rtsp_conns_bytes_received", tags, int64(i.BytesReceived))
+					out += metric("rtsp_conns_bytes_sent", tags, int64(i.BytesSent))
+					out += metric("rtsp_conns_bitrate_received", tags, 0)
 					out += metric("rtsp_conns_bitrate_sent", tags, int64(i.BitrateSent))
-					out += metric("rtsp_conns_bitrate_received", "", 0)
 				}
 			} else {
 				out += metric("rtsp_conns", "", 0)
-				// out += metric("rtsp_conns_bytes_received", "", 0)
-				// out += metric("rtsp_conns_bytes_sent", "", 0)
-				out += metric("rtsp_conns_bitrate_sent", "", 0)
+				out += metric("rtsp_conns_bytes_received", "", 0)
+				out += metric("rtsp_conns_bytes_sent", "", 0)
 				out += metric("rtsp_conns_bitrate_received", "", 0)
+				out += metric("rtsp_conns_bitrate_sent", "", 0)
 			}
 		}()
 
@@ -234,17 +233,18 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 			data, err := m.rtspServer.APISessionsList()
 			if err == nil && len(data.Items) != 0 {
 				for _, i := range data.Items {
-					tags := "{id=\"" + i.ID.String() + "\",state=\"" + string(i.State) + "\", path=\"" + string(i.Path) + "\", remoteAddr=\"" + string(i.RemoteAddr) + "\"	}"
+					tags := "{id=\"" + i.ID.String() + "\",state=\"" + string(i.State) + "\", " +
+						"path=\"" + (i.Path) + "\", remoteAddr=\"" + (i.RemoteAddr) + "\"}"
 					out += metric("rtsp_sessions", tags, 1)
-					// out += metric("rtsp_sessions_bytes_received", tags, int64(i.BytesReceived))
-					// out += metric("rtsp_sessions_bytes_sent", tags, int64(i.BytesSent))
+					out += metric("rtsp_sessions_bytes_received", tags, int64(i.BytesReceived))
+					out += metric("rtsp_sessions_bytes_sent", tags, int64(i.BytesSent))
 					out += metric("rtsp_sessions_bitrate_received", tags, int64(i.BitrateReceived))
 					out += metric("rtsp_sessions_bitrate_sent", tags, int64(i.BitrateSent))
 				}
 			} else {
 				out += metric("rtsp_sessions", "", 0)
-				// out += metric("rtsp_sessions_bytes_received", "", 0)
-				// out += metric("rtsp_sessions_bytes_sent", "", 0)
+				out += metric("rtsp_sessions_bytes_received", "", 0)
+				out += metric("rtsp_sessions_bytes_sent", "", 0)
 				out += metric("rtsp_sessions_bitrate_received", "", 0)
 				out += metric("rtsp_sessions_bitrate_sent", "", 0)
 			}
@@ -386,20 +386,20 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 		data, err := m.webRTCServer.APISessionsList()
 		if err == nil && len(data.Items) != 0 {
 			for _, i := range data.Items {
-				tags := "{id=\"" + i.ID.String() + "\",state=\"" + string(i.State) + "\", path=\"" + string(i.Path) + "\", remoteCandidate=\"" + string(i.RemoteCandidate) + "\", localCandidate=\"" + string(i.LocalCandidate) + "\"}"
+				tags := "{id=\"" + i.ID.String() + "\",state=\"" + string(i.State) + "\", path=\"" + (i.Path) +
+					"\", remoteCandidate=\"" + (i.RemoteCandidate) + "\", localCandidate=\"" + (i.LocalCandidate) + "\"}"
 				out += metric("webrtc_sessions", tags, 1)
-				// out += metric("webrtc_sessions_bytes_received", tags, int64(i.BytesReceived))
-				// out += metric("webrtc_sessions_bytes_sent", tags, int64(i.BytesSent))
-				out += metric("webrtc_sessions_bitrate_sent", tags, int64(i.BitrateSent))
+				out += metric("webrtc_sessions_bytes_received", tags, int64(i.BytesReceived))
+				out += metric("webrtc_sessions_bytes_sent", tags, int64(i.BytesSent))
 				out += metric("webrtc_sessions_bitrate_received", tags, int64(i.BitrateReceived))
-
+				out += metric("webrtc_sessions_bitrate_sent", tags, int64(i.BitrateSent))
 			}
 		} else {
 			out += metric("webrtc_sessions", "", 0)
-			// out += metric("webrtc_sessions_bytes_received", "", 0)
-			// out += metric("webrtc_sessions_bytes_sent", "", 0)
-			out += metric("webrtc_sessions_bitrate_sent", "", 0)
+			out += metric("webrtc_sessions_bytes_received", "", 0)
+			out += metric("webrtc_sessions_bytes_sent", "", 0)
 			out += metric("webrtc_sessions_bitrate_received", "", 0)
+			out += metric("webrtc_sessions_bitrate_sent", "", 0)
 		}
 	}
 

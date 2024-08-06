@@ -20,8 +20,8 @@ type APIGstPipeList struct {
 	Items     []*APIGstPipe `json:"items"`
 }
 
+// APIGstJitterBufferStats is a GStreamer jitter buffer stats.
 type APIGstJitterBufferStats struct {
-
 	// The number of packets considered lost
 	NumLost uint64 `json:"numLost"`
 	// The number of packets arriving too late
@@ -40,6 +40,7 @@ type APIGstJitterBufferStats struct {
 	RtxRtt uint64 `json:"rtxRtt"`
 }
 
+// APIGstRtpSourceStats is a GStreamer RTP source stats.
 type APIGstRtpSourceStats struct {
 	// Estimated amount of packets lost
 	PacketsLost int `json:"packetsLost"`
@@ -51,6 +52,7 @@ type APIGstRtpSourceStats struct {
 	Jitter uint `json:"jitter"`
 }
 
+// APIGstRtpSessionStats is a GStreamer RTP session stats.
 type APIGstRtpSessionStats struct {
 	// The number of retransmission events dropped (due to bandwidth constraints)
 	RtxDropCount uint64 `json:"rtxDropCount"`
