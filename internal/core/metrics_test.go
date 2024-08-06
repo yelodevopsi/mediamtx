@@ -78,15 +78,23 @@ hls_muxers_bytes_sent 0
 rtsp_conns 0
 rtsp_conns_bytes_received 0
 rtsp_conns_bytes_sent 0
+rtsp_conns_bitrate_received 0
+rtsp_conns_bitrate_sent 0
 rtsp_sessions 0
 rtsp_sessions_bytes_received 0
 rtsp_sessions_bytes_sent 0
+rtsp_sessions_bitrate_received 0
+rtsp_sessions_bitrate_sent 0
 rtsps_conns 0
 rtsps_conns_bytes_received 0
 rtsps_conns_bytes_sent 0
+rtsps_conns_bitrate_received 0
+rtsps_conns_bitrate_sent 0
 rtsps_sessions 0
 rtsps_sessions_bytes_received 0
 rtsps_sessions_bytes_sent 0
+rtsps_sessions_bitrate_received 0
+rtsps_sessions_bitrate_sent 0
 rtmp_conns 0
 rtmp_conns_bytes_received 0
 rtmp_conns_bytes_sent 0
@@ -99,6 +107,8 @@ srt_conns_bytes_sent 0
 webrtc_sessions 0
 webrtc_sessions_bytes_received 0
 webrtc_sessions_bytes_sent 0
+webrtc_sessions_bitrate_received 0
+webrtc_sessions_bitrate_sent 0
 `, string(bo))
 	})
 
