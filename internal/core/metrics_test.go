@@ -274,7 +274,7 @@ webrtc_sessions_bitrate_sent 0
 				`rtsp_conns\{id=".*?"\} 1`+"\n"+
 				`rtsp_conns_bytes_received\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsp_conns_bytes_sent\{id=".*?"\} [0-9]+`+"\n"+
-				`rtsp_conns_bitrate_received\{id=".*?"\} 0`+"\n"+
+				`rtsp_conns_bitrate_received\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsp_conns_bitrate_sent\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsp_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtsp_sessions_bytes_received\{id=".*?",state="publish"\} 0`+"\n"+
@@ -297,7 +297,7 @@ webrtc_sessions_bitrate_sent 0
 				`srt_conns_packets_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_sent_unique\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`srt_conns_packets_received_unique\{id=".*?",state="publish"\} 1`+"\n"+
+				`srt_conns_packets_received_unique\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_send_loss\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_received_loss\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_retrans\{id=".*?",state="publish"\} [0-9]+`+"\n"+
