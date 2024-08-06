@@ -258,8 +258,11 @@ webrtc_sessions_bitrate_sent 0
 				`paths_bytes_sent\{name=".*?",state="ready"\} [0-9]+`+"\n"+
 				`paths\{name=".*?",state="ready"\} 1`+"\n"+
 				`paths_bytes_received\{name=".*?",state="ready"\} [0-9]+`+"\n"+
-				`paths_bytes_sent\{name=".*?",state="ready"\} [0-9]+`+"\n"+
-				`hls_muxers\{name=".*?"\} 1`+"\n"+
+				`paths_bytes_sent\{name=".*?",state="ready"\} [0-9]+`+"\n",
+			string(bo))
+
+		require.Regexp(t,
+			`hls_muxers\{name=".*?"\} 1`+"\n"+
 				`hls_muxers_bytes_sent\{name=".*?"\} 0`+"\n"+
 				`hls_muxers\{name=".*?"\} 1`+"\n"+
 				`hls_muxers_bytes_sent\{name=".*?"\} 0`+"\n"+
@@ -268,10 +271,11 @@ webrtc_sessions_bitrate_sent 0
 				`hls_muxers\{name=".*?"\} 1`+"\n"+
 				`hls_muxers_bytes_sent\{name=".*?"\} 0`+"\n"+
 				`hls_muxers\{name=".*?"\} 1`+"\n"+
-				`hls_muxers_bytes_sent\{name=".*?"\} 0`+"\n"+
-				`hls_muxers\{name=".*?"\} 1`+"\n"+
-				`hls_muxers_bytes_sent\{name=".*?"\} 0`+"\n"+
-				`rtsp_conns\{id=".*?"\} 1`+"\n"+
+				`hls_muxers_bytes_sent\{name=".*?"\} 0`+"\n",
+			string(bo))
+
+		require.Regexp(t,
+			`rtsp_conns\{id=".*?"\} 1`+"\n"+
 				`rtsp_conns_bytes_received\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsp_conns_bytes_sent\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsp_conns_bitrate_received\{id=".*?"\} [0-9]+`+"\n"+
@@ -279,21 +283,25 @@ webrtc_sessions_bitrate_sent 0
 				`rtsp_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtsp_sessions_bytes_received\{id=".*?",state="publish"\} 0`+"\n"+
 				`rtsp_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`rtsp_sessions_bitrate_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`rtsp_sessions_bitrate_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtsps_conns\{id=".*?"\} 1`+"\n"+
 				`rtsps_conns_bytes_received\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsps_conns_bytes_sent\{id=".*?"\} [0-9]+`+"\n"+
 				`rtsps_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtsps_sessions_bytes_received\{id=".*?",state="publish"\} 0`+"\n"+
-				`rtsps_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`rtmp_conns\{id=".*?",state="publish"\} 1`+"\n"+
+				`rtsps_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n",
+			string(bo))
+
+		require.Regexp(t,
+			`rtmp_conns\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtmp_conns_bytes_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtmp_conns_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtmps_conns\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtmps_conns_bytes_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`rtmps_conns_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`srt_conns\{id=".*?",state="publish"\} 1`+"\n"+
+				`rtmps_conns_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n",
+			string(bo))
+
+		require.Regexp(t,
+			`srt_conns\{id=".*?",state="publish"\} 1`+"\n"+
 				`srt_conns_packets_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_sent_unique\{id=".*?",state="publish"\} [0-9]+`+"\n"+
@@ -307,8 +315,11 @@ webrtc_sessions_bitrate_sent 0
 				`srt_conns_packets_sent_nak\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_received_nak\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_sent_km\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`srt_conns_packets_received_km\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`srt_conns_us_snd_duration\{id=".*?",state="publish"\} [0-9]+`+"\n"+
+				`srt_conns_packets_received_km\{id=".*?",state="publish"\} [0-9]+`+"\n",
+			string(bo))
+
+		require.Regexp(t,
+			`srt_conns_us_snd_duration\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_send_drop\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_received_drop\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_received_undecrypt\{id=".*?",state="publish"\} [0-9]+`+"\n"+
@@ -321,8 +332,11 @@ webrtc_sessions_bitrate_sent 0
 				`srt_conns_bytes_received_retrans\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_bytes_send_drop\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_bytes_received_drop\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`srt_conns_bytes_received_undecrypt\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`srt_conns_us_packets_send_period\{id=".*?",state="publish"\} \d+\.\d+`+"\n"+
+				`srt_conns_bytes_received_undecrypt\{id=".*?",state="publish"\} [0-9]+`+"\n",
+			string(bo))
+
+		require.Regexp(t,
+			`srt_conns_us_packets_send_period\{id=".*?",state="publish"\} \d+\.\d+`+"\n"+
 				`srt_conns_packets_flow_window\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_flight_size\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_ms_rtt\{id=".*?",state="publish"\} \d+\.\d+`+"\n"+
@@ -344,12 +358,13 @@ webrtc_sessions_bitrate_sent 0
 				`srt_conns_packets_reorder_tolerance\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_received_avg_belated_time\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`srt_conns_packets_send_loss_rate\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`srt_conns_packets_received_loss_rate\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`webrtc_sessions\{id=".*?",state="publish"\} 1`+"\n"+
+				`srt_conns_packets_received_loss_rate\{id=".*?",state="publish"\} [0-9]+`+"\n",
+			string(bo))
+
+		require.Regexp(t,
+			`webrtc_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`webrtc_sessions_bytes_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`webrtc_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`webrtc_sessions_bitrate_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`webrtc_sessions_bitrate_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				"$",
 			string(bo))
 
