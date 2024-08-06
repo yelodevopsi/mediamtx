@@ -68,14 +68,6 @@ jobs:
       - name: Install GStreamer development msi
         run: choco install gstreamer-devel -y
 
-      - name: Install curl 8.9.1 with chocolatey
-        run: choco install curl --version=8.9.1
-
-      - name: Set environment variable for curl package
-        run: |
-          $curlPath = (Get-ChildItem -Path 'C:\ProgramData\chocolatey\lib\' -Filter 'curl*' | Select-Object -First 1).FullName
-          echo "CURL_PACKAGE_PATH=$curlPath" >> $env:GITHUB_ENV
-
       - name: Bootstrap vcpkg from already existing C:\vcpkg
         run: |
           cd C:\vcpkg
