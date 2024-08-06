@@ -214,7 +214,6 @@ func (c *conn) handleAuthError(authErr error) (*base.Response, error) {
 
 // BitrateSent returns sent bitrate.
 func (co *conn) BitrateSent() uint64 {
-
 	// Get the current bytes sent
 	currentBytesSent := co.rconn.BytesSent()
 	currentTime := time.Now()
@@ -240,7 +239,6 @@ func (co *conn) BitrateSent() uint64 {
 
 // BitrateReceived returns received bitrate.
 func (co *conn) BitrateReceived() uint64 {
-
 	// Get the current bytes received
 	currentBytesReceived := co.rconn.BytesReceived()
 	currentTime := time.Now()

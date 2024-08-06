@@ -21,7 +21,6 @@ type APIGstPipeList struct {
 }
 
 type APIGstJitterBufferStats struct {
-
 	// The number of packets considered lost
 	NumLost uint64 `json:"numLost"`
 	// The number of packets arriving too late

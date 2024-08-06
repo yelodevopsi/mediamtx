@@ -50,7 +50,6 @@ type gstPipeStat struct {
 }
 
 func (c *gstPipeStat) apiItem() *defs.APIGstPipe {
-
 	apiJitterStat := &defs.APIGstJitterBufferStats{
 		NumLost:         c.jitterStats.numLost,
 		NumLate:         c.jitterStats.numLate,

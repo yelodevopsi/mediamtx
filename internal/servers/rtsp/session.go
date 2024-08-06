@@ -378,7 +378,6 @@ func (s *session) onStreamWriteError(ctx *gortsplib.ServerHandlerOnStreamWriteEr
 
 // BitrateSent returns sent bitrate.
 func (s *session) BitrateSent() uint64 {
-
 	// Get the current bytes sent
 	currentBytesSent := s.rsession.BytesSent()
 	currentTime := time.Now()
@@ -404,7 +403,6 @@ func (s *session) BitrateSent() uint64 {
 
 // BitrateReceived returns received bitrate.
 func (s *session) BitrateReceived() uint64 {
-
 	// Get the current bytes received
 
 	currentBytesReceived := s.rsession.BytesReceived()
