@@ -79,6 +79,8 @@ type RTSPServer interface {
 	APISessionsGet(uuid.UUID) (*defs.APIRTSPSession, error)
 	APISessionsKick(uuid.UUID) error
 }
+
+// GstPipeServer contains methods used by the API and Metrics server.
 type GstPipeServer interface {
 	APIGstPipeGet(string) (*defs.APIGstPipe, error)
 	APIGstPipeList() (*defs.APIGstPipeList, error)
@@ -175,7 +177,6 @@ func (a *API) Initialize() error {
 		group.POST("/v3/gst/stats/jitterbuffer/*name", a.onJitterBufferStatsReceived)
 		group.POST("/v3/gst/stats/rtpsource/*name", a.onRtpSourceStatsReceived)
 		group.POST("/v3/gst/stats/rtpsession/*name", a.onRtpSessionStatsReceived)
-
 	}
 
 	group.GET("/v3/paths/list", a.onPathsList)
@@ -409,7 +410,6 @@ func (a *API) onConfigYamlGet(ctx *gin.Context) {
 }
 
 func (a *API) onConfigYamlPost(ctx *gin.Context) {
-
 	// Write YAML data to the file
 
 	// Extract YAML data from the request body
@@ -420,8 +420,7 @@ func (a *API) onConfigYamlPost(ctx *gin.Context) {
 	}
 
 	// Create a temporary file with the YAML content to validate the file saving it
-	filePath, err := test.CreateTempFile([]byte(yamlData))
-
+	filePath, err := test.CreateTempFile(yamlData) //
 	if err != nil {
 		a.writeError(ctx, http.StatusBadRequest, err)
 		return
@@ -438,7 +437,7 @@ func (a *API) onConfigYamlPost(ctx *gin.Context) {
 	// Write final YAML to the file
 	confPath := a.Parent.APIGetConfigPath()
 
-	err = os.WriteFile(confPath, yamlData, 0644)
+	err = os.WriteFile(confPath, yamlData, 0o644)
 	if err != nil {
 		a.writeError(ctx, http.StatusInternalServerError, err)
 		return
@@ -446,6 +445,7 @@ func (a *API) onConfigYamlPost(ctx *gin.Context) {
 
 	ctx.Status(http.StatusOK)
 }
+
 func (a *API) onConfigPathsList(ctx *gin.Context) {
 	a.mutex.RLock()
 	c := a.Conf
@@ -1235,8 +1235,7 @@ func (a *API) ReloadConf(conf *conf.Conf) {
 }
 
 func (a *API) onJitterBufferStatsReceived(ctx *gin.Context) {
-
-	path, ok := paramName(ctx) // path or cameraId
+	path, ok := paramName(ctx) // path or cameraID
 	if !ok {
 		a.writeError(ctx, http.StatusBadRequest, fmt.Errorf("invalid Camera ID/pathname"))
 		return
@@ -1257,9 +1256,9 @@ func (a *API) onJitterBufferStatsReceived(ctx *gin.Context) {
 
 	ctx.Status(http.StatusOK)
 }
-func (a *API) onRtpSourceStatsReceived(ctx *gin.Context) {
 
-	path, ok := paramName(ctx) // path or cameraId
+func (a *API) onRtpSourceStatsReceived(ctx *gin.Context) {
+	path, ok := paramName(ctx) // path or cameraID
 	if !ok {
 		a.writeError(ctx, http.StatusBadRequest, fmt.Errorf("invalid Camera ID/pathname"))
 		return
@@ -1279,12 +1278,10 @@ func (a *API) onRtpSourceStatsReceived(ctx *gin.Context) {
 	a.GstStatsServer.APIGstRtpSourceStatPut(path, &c)
 
 	ctx.Status(http.StatusOK)
-
 }
 
 func (a *API) onRtpSessionStatsReceived(ctx *gin.Context) {
-
-	path, ok := paramName(ctx) // path or cameraId
+	path, ok := paramName(ctx) // path or cameraID
 	if !ok {
 		a.writeError(ctx, http.StatusBadRequest, fmt.Errorf("invalid Camera ID/pathname"))
 		return
@@ -1304,17 +1301,16 @@ func (a *API) onRtpSessionStatsReceived(ctx *gin.Context) {
 	a.GstStatsServer.APIGstRtpSessionStatPut(path, &c)
 
 	ctx.Status(http.StatusOK)
-
 }
 
 func (a *API) onGstStatsGet(ctx *gin.Context) {
-	cameraId, ok := paramName(ctx)
+	cameraID, ok := paramName(ctx)
 	if !ok {
 		a.writeError(ctx, http.StatusBadRequest, fmt.Errorf("invalid path name"))
 		return
 	}
 
-	data, err := a.GstStatsServer.APIGstPipeGet(cameraId)
+	data, err := a.GstStatsServer.APIGstPipeGet(cameraID)
 	if err != nil {
 		if errors.Is(err, gstpipe.ErrStatNotFound) {
 			a.writeError(ctx, http.StatusNotFound, err)
@@ -1325,13 +1321,10 @@ func (a *API) onGstStatsGet(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, data)
-
 }
 
 func (a *API) onGstStatsList(ctx *gin.Context) {
-
 	data, err := a.GstStatsServer.APIGstPipeList()
-
 	if err != nil {
 		a.writeError(ctx, http.StatusInternalServerError, err)
 		return
@@ -1339,7 +1332,6 @@ func (a *API) onGstStatsList(ctx *gin.Context) {
 
 	data.ItemCount = len(data.Items)
 	pageCount, err := paginate(&data.Items, ctx.Query("itemsPerPage"), ctx.Query("page"))
-
 	if err != nil {
 		a.writeError(ctx, http.StatusBadRequest, err)
 		return
@@ -1348,5 +1340,4 @@ func (a *API) onGstStatsList(ctx *gin.Context) {
 	data.PageCount = pageCount
 
 	ctx.JSON(http.StatusOK, data)
-
 }

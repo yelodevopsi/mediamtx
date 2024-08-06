@@ -430,7 +430,6 @@ func (p *Core) createResources(initial bool) error {
 
 	if p.conf.GstPipe &&
 		p.gstPipeServer == nil {
-
 		i := &gstpipe.StatServer{
 			PathConf: p.conf.Paths,
 			Parent:   p,
@@ -1060,6 +1059,7 @@ func (p *Core) APIConfigSet(conf *conf.Conf) {
 	}
 }
 
+// APIGetConfigPath returns the path of the configuration file.
 func (p *Core) APIGetConfigPath() string {
 	return p.confPath
 }

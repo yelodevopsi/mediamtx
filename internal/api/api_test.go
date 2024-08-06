@@ -25,6 +25,10 @@ func (testParent) Log(_ logger.Level, _ string, _ ...interface{}) {
 
 func (testParent) APIConfigSet(_ *conf.Conf) {}
 
+func (testParent) APIGetConfigPath() string {
+	return ""
+}
+
 func tempConf(t *testing.T, cnt string) *conf.Conf {
 	fi, err := test.CreateTempFile([]byte(cnt))
 	require.NoError(t, err)

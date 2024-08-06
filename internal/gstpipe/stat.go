@@ -1,3 +1,4 @@
+// Package gstpipe provides a GStreamer pipeline abstraction.
 package gstpipe
 
 import "github.com/bluenviron/mediamtx/internal/defs"
@@ -50,7 +51,6 @@ type gstPipeStat struct {
 }
 
 func (c *gstPipeStat) apiItem() *defs.APIGstPipe {
-
 	apiJitterStat := &defs.APIGstJitterBufferStats{
 		NumLost:         c.jitterStats.numLost,
 		NumLate:         c.jitterStats.numLate,

@@ -213,52 +213,48 @@ func (c *conn) handleAuthError(authErr error) (*base.Response, error) {
 }
 
 // BitrateSent returns sent bitrate.
-func (co *conn) BitrateSent() uint64 {
-
+func (c *conn) BitrateSent() uint64 {
 	// Get the current bytes sent
-	currentBytesSent := co.rconn.BytesSent()
+	currentBytesSent := c.rconn.BytesSent()
 	currentTime := time.Now()
 
 	// Calculate the difference in bytes and time
-	bytesDiff := currentBytesSent - co.prevBytesSent
-	timeDiff := currentTime.Sub(co.lastUpdateTime).Seconds()
+	bytesDiff := currentBytesSent - c.prevBytesSent
+	timeDiff := currentTime.Sub(c.lastUpdateTime).Seconds()
 
 	// Update the previous bytes sent and last update time
-	co.prevBytesSent = currentBytesSent
-	co.lastUpdateTime = currentTime
+	c.prevBytesSent = currentBytesSent
+	c.lastUpdateTime = currentTime
 
 	// Calculate the bitrate in bits per second (bps)
 	if (timeDiff) > 0 {
-		bytesDiffFloat := float64(bytesDiff * 8)
-		timeDiffFloat := float64(timeDiff)
+		bytesDiffFloat := (bytesDiff * 8)
 
-		return uint64(bytesDiffFloat / timeDiffFloat)
+		return uint64(float64(bytesDiffFloat) / (timeDiff))
 	}
 
 	return 0
 }
 
 // BitrateReceived returns received bitrate.
-func (co *conn) BitrateReceived() uint64 {
-
+func (c *conn) BitrateReceived() uint64 {
 	// Get the current bytes received
-	currentBytesReceived := co.rconn.BytesReceived()
+	currentBytesReceived := c.rconn.BytesReceived()
 	currentTime := time.Now()
 
 	// Calculate the difference in bytes and time
-	bytesDiff := currentBytesReceived - co.prevBytesReceived
-	timeDiff := currentTime.Sub(co.lastUpdateReceived).Seconds()
+	bytesDiff := currentBytesReceived - c.prevBytesReceived
+	timeDiff := currentTime.Sub(c.lastUpdateReceived).Seconds()
 
 	// Update the previous bytes received and last update time
-	co.prevBytesReceived = currentBytesReceived
-	co.lastUpdateReceived = currentTime
+	c.prevBytesReceived = currentBytesReceived
+	c.lastUpdateReceived = currentTime
 
 	// Calculate the bitrate in bits per second (bps)
 	if timeDiff > 0 {
 		bytesDiffFloat := float64(bytesDiff * 8)
-		timeDiffFloat := float64(timeDiff)
 
-		return uint64(bytesDiffFloat / timeDiffFloat)
+		return uint64(bytesDiffFloat / timeDiff)
 	}
 
 	return 0
