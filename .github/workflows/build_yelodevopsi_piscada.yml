@@ -1,4 +1,4 @@
-name: Build and Tag Docker Image
+name: Build and Tag Docker and Windows Artifacts
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - "feature/*"
 
 jobs:
-  build:
+  build-docker-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,7 +44,7 @@ jobs:
           docker tag piscada/mtx:dev piscada/mtx:preview
           docker push piscada/mtx:preview
 
-  build-windows:
+  build-windows-artifacts:
     runs-on: windows-latest
 
     steps:
@@ -76,7 +76,7 @@ jobs:
       - name: Install GStreamer runtime msi
         run: |
           choco install gstreamer -y
-          echo "GSTREAMER_1_0_ROOT_MSVC_X86_64=D:\gstreamer\1.0\msvc_x86_64\" >> $env:GITHUB_ENV
+          echo "GSTREAMER_1_0_ROOT_MSVC_X86_64=D:\gstreamer\1.0\msvc_x86_64" >> $env:GITHUB_ENV
 
       - name: Install GStreamer development msi
         run: choco install gstreamer-devel -y
