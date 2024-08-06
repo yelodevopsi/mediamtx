@@ -260,15 +260,11 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 					out += metric("rtsps_conns", tags, 1)
 					out += metric("rtsps_conns_bytes_received", tags, int64(i.BytesReceived))
 					out += metric("rtsps_conns_bytes_sent", tags, int64(i.BytesSent))
-					out += metric("rtsps_conns_bitrate_received", "", 0)
-					out += metric("rtsps_conns_bitrate_sent", tags, int64(i.BitrateSent))
 				}
 			} else {
 				out += metric("rtsps_conns", "", 0)
 				out += metric("rtsps_conns_bytes_received", "", 0)
 				out += metric("rtsps_conns_bytes_sent", "", 0)
-				out += metric("rtsps_conns_bitrate_received", "", 0)
-				out += metric("rtsps_conns_bitrate_sent", "", 0)
 			}
 		}()
 
@@ -280,15 +276,13 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 					out += metric("rtsps_sessions", tags, 1)
 					out += metric("rtsps_sessions_bytes_received", tags, int64(i.BytesReceived))
 					out += metric("rtsps_sessions_bytes_sent", tags, int64(i.BytesSent))
-					out += metric("rtsps_sessions_bitrate_received", tags, int64(i.BitrateReceived))
-					out += metric("rtsps_sessions_bitrate_sent", tags, int64(i.BitrateSent))
+
 				}
 			} else {
 				out += metric("rtsps_sessions", "", 0)
 				out += metric("rtsps_sessions_bytes_received", "", 0)
 				out += metric("rtsps_sessions_bytes_sent", "", 0)
-				out += metric("rtsps_sessions_bitrate_received", "", 0)
-				out += metric("rtsps_sessions_bitrate_sent", "", 0)
+
 			}
 		}()
 	}
