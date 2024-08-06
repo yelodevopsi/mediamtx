@@ -252,9 +252,12 @@ webrtc_sessions_bitrate_sent 0
 			`rtsp_conns_bytes_sent\{id=".*?"\} [0-9]+`,
 			`rtsp_conns_bitrate_received\{id=".*?"\} [0-9]+`,
 			`rtsp_conns_bitrate_sent\{id=".*?"\} [0-9]+`,
-			`rtsp_sessions\{id=".*?",state="publish"\} 1`,
-			`rtsp_sessions_bytes_received\{id=".*?",state="publish"\} 0`,
-			`rtsp_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`,
+			// RTSP Session Patterns
+			`rtsp_sessions\{id=".*?",state="publish", path=".*?", remoteAddr="\[.*?\]:\d+"\} 1`,
+			`rtsp_sessions_bytes_received\{id=".*?",state="publish", path=".*?", remoteAddr="\[.*?\]:\d+"\} [0-9]+`,
+			`rtsp_sessions_bytes_sent\{id=".*?",state="publish", path=".*?", remoteAddr="\[.*?\]:\d+"\} [0-9]+`,
+			`rtsp_sessions_bitrate_received\{id=".*?",state="publish", path=".*?", remoteAddr="\[.*?\]:\d+"\} [0-9]+`,
+			`rtsp_sessions_bitrate_sent\{id=".*?",state="publish", path=".*?", remoteAddr="\[.*?\]:\d+"\} [0-9]+`,
 			`rtsps_conns\{id=".*?"\} 1`,
 			`rtsps_conns_bytes_received\{id=".*?"\} [0-9]+`,
 			`rtsps_conns_bytes_sent\{id=".*?"\} [0-9]+`,
@@ -320,8 +323,12 @@ webrtc_sessions_bitrate_sent 0
 			`srt_conns_packets_send_loss_rate\{id=".*?",state="publish"\} [0-9]+`,
 			`srt_conns_packets_received_loss_rate\{id=".*?",state="publish"\} [0-9]+`,
 			`webrtc_sessions\{id=".*?",state="publish"\} 1`,
-			`webrtc_sessions_bytes_received\{id=".*?",state="publish"\} [0-9]+`,
-			`webrtc_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`,
+			// WebRTC Session Patterns
+			`webrtc_sessions\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} 1`,
+			`webrtc_sessions_bytes_received\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
+			`webrtc_sessions_bytes_sent\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
+			`webrtc_sessions_bitrate_received\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
+			`webrtc_sessions_bitrate_sent\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
 		}
 
 		// Check each pattern
