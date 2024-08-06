@@ -91,8 +91,6 @@ rtsps_conns_bytes_sent 0
 rtsps_sessions 0
 rtsps_sessions_bytes_received 0
 rtsps_sessions_bytes_sent 0
-rtsps_sessions_bitrate_received 0
-rtsps_sessions_bitrate_sent 0
 rtmp_conns 0
 rtmp_conns_bytes_received 0
 rtmp_conns_bytes_sent 0
@@ -289,8 +287,6 @@ webrtc_sessions_bitrate_sent 0
 				`rtsps_sessions\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtsps_sessions_bytes_received\{id=".*?",state="publish"\} 0`+"\n"+
 				`rtsps_sessions_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
-				`rtsps_sessions_bitrate_received\{id=".*?",state="publish"\} 0`+"\n"+
-				`rtsps_sessions_bitrate_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtmp_conns\{id=".*?",state="publish"\} 1`+"\n"+
 				`rtmp_conns_bytes_received\{id=".*?",state="publish"\} [0-9]+`+"\n"+
 				`rtmp_conns_bytes_sent\{id=".*?",state="publish"\} [0-9]+`+"\n"+
