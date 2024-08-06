@@ -276,13 +276,11 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 					out += metric("rtsps_sessions", tags, 1)
 					out += metric("rtsps_sessions_bytes_received", tags, int64(i.BytesReceived))
 					out += metric("rtsps_sessions_bytes_sent", tags, int64(i.BytesSent))
-
 				}
 			} else {
 				out += metric("rtsps_sessions", "", 0)
 				out += metric("rtsps_sessions_bytes_received", "", 0)
 				out += metric("rtsps_sessions_bytes_sent", "", 0)
-
 			}
 		}()
 	}
