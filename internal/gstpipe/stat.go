@@ -1,3 +1,4 @@
+// Package gstpipe provides a GStreamer pipeline abstraction.
 package gstpipe
 
 import "github.com/bluenviron/mediamtx/internal/defs"
