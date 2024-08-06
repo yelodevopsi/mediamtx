@@ -240,6 +240,8 @@ webrtc_sessions_bitrate_sent 0
 
 		bo := httpPullFile(t, hc, "http://localhost:9998/metrics")
 
+		// the order of the metrics is not guaranteed
+
 		require.Regexp(t,
 			`^paths\{name=".*?",state="ready"\} 1`+"\n"+
 				`paths_bytes_received\{name=".*?",state="ready"\} [0-9]+`+"\n"+
