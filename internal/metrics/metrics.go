@@ -217,7 +217,7 @@ func (m *Metrics) onRequest(ctx *gin.Context) {
 					out += metric("rtsp_conns", tags, 1)
 					out += metric("rtsp_conns_bytes_received", tags, int64(i.BytesReceived))
 					out += metric("rtsp_conns_bytes_sent", tags, int64(i.BytesSent))
-					out += metric("rtsp_conns_bitrate_received", "", 0)
+					out += metric("rtsp_conns_bitrate_received", tags, 0)
 					out += metric("rtsp_conns_bitrate_sent", tags, int64(i.BitrateSent))
 				}
 			} else {
