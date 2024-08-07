@@ -324,10 +324,10 @@ webrtc_sessions_bitrate_sent 0
 			`srt_conns_packets_received_loss_rate\{id=".*?",state="publish"\} [0-9]+`,
 			// WebRTC Session Patterns
 			`webrtc_sessions\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} 1`,
-			`webrtc_sessions_bytes_received\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
-			`webrtc_sessions_bytes_sent\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
-			`webrtc_sessions_bitrate_received\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
-			`webrtc_sessions_bitrate_sent\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,
+			`webrtc_sessions_bytes_received\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,   //nolint:lll
+			`webrtc_sessions_bytes_sent\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,       //nolint:lll
+			`webrtc_sessions_bitrate_received\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`, //nolint:lll
+			`webrtc_sessions_bitrate_sent\{id=".*?",state="publish", path=".*?", remoteCandidate=".*?", localCandidate=".*?"\} [0-9]+`,     //nolint:lll
 		}
 
 		// Check each pattern
