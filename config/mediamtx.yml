@@ -647,4 +647,4 @@ paths:
     runOnDemand: gst-launch-1.0 rtspsrc location=rtsp://172.25.25.104:554/VideoInput/1/h264/1 name=src latency=10 drop-on-latency=true udp-buffer-size=10242888 ! queue2 ! rtph264depay ! h264parse ! queue2 ! rtspclientsink name=sink location=rtsp://localhost:$RTSP_PORT/$MTX_PATH
 
   PI-41:
-    runOnDemand: gst-launch-1.0 rtspsrc location=rtsp://172.25.25.141:554/video1 name=src user-id=admin user-pw=piscada3138 latency=10 drop-on-latency=true udp-buffer-size=10242888 ! queue2 ! rtph264depay ! h264parse ! queue2 ! rtspclientsink name=sink location=rtsp://localhost:$RTSP_PORT/$MTX_PATH
+    runOnDemand: gst-launch-1.0 rtspsrc location=rtsp://172.25.25.141:554/video1 name=src user-id=admin user-pw=pwd_inside_here latency=10 drop-on-latency=true udp-buffer-size=10242888 ! queue2 ! rtph264depay ! h264parse ! queue2 ! rtspclientsink name=sink location=rtsp://localhost:$RTSP_PORT/$MTX_PATH
